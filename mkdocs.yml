@@ -1,4 +1,4 @@
-site_name: 'Algorithm Solutions'
+site_name: '算法'
 site_description: 'Solutions to Introduction to Algorithms Third Edition. Algorithm Solutions. The textbook that a Computer Science (CS) student must read.'
 site_author: 'cj'
 site_url: 'https://cjql.github.io/algorithm'
@@ -43,10 +43,8 @@ markdown_extensions:
       permalink: false
 
 nav:
-  - Preface: index.md
-  - Color: color.md
-  - I Foundations:
-      - 1 The Role of Algorithms in Computing:
+  - 基础:
+      - 1 算法在计算机中的作用:
           - 1.1 Algorithms: Chap01/1.1.md
           - 1.2 Algorithms as a technology: Chap01/1.2.md
           - Chap 1 Problems:
@@ -92,7 +90,7 @@ nav:
           - Chap 5 Problems:
               - 5-1 Probabilstic counting: Chap05/Problems/5-1.md
               - 5-2 Searching an unsorted array: Chap05/Problems/5-2.md
-  - II Sorting and Order Statistics:
+  - 排序:
       - 6 Heapsort:
           - 6.1 Heaps: Chap06/6.1.md
           - 6.2 Maintaining the heap property: Chap06/6.2.md
@@ -137,7 +135,7 @@ nav:
               - 9-2 Weighted median: Chap09/Problems/9-2.md
               - 9-3 Small order statistics: Chap09/Problems/9-3.md
               - 9-4 Alternative analysis of randomized selection: Chap09/Problems/9-4.md
-  - III Data Structures:
+  - 数据结构:
       - 10 Elementary Data Structures:
           - 10.1 Stacks and queues: Chap10/10.1.md
           - 10.2 Linked lists: Chap10/10.2.md
@@ -185,7 +183,7 @@ nav:
           - Chap 14 Problems:
               - 14-1 Point of maximum overlap: Chap14/Problems/14-1.md
               - 14-2 Josephus permutation: Chap14/Problems/14-2.md
-  - IV Advanced Design and Analysis Techniques:
+  - 高级设计和分析:
       - 15 Dynamic Programming:
           - 15.1 Rod cutting: Chap15/15.1.md
           - 15.2 Matrix-chain multiplication: Chap15/15.2.md
@@ -228,7 +226,7 @@ nav:
               - 17-3 Amortized weight-balanced trees: Chap17/Problems/17-3.md
               - 17-4 The cost of restructuring red-black trees: Chap17/Problems/17-4.md
               - 17-5 Competitive analysis of self-organizing lists with move-to-front: Chap17/Problems/17-5.md
-  - V Advanced Data Structures:
+  - 高级数据结构:
       - 18 B-Trees:
           - 18.1 Definition of B-trees: Chap18/18.1.md
           - 18.2 Basic operations on B-trees: Chap18/18.2.md
@@ -262,7 +260,7 @@ nav:
               - 21-1 Off-line minimum: Chap21/Problems/21-1.md
               - 21-2 Depth determination: Chap21/Problems/21-2.md
               - 21-3 Tarjan's off-line least-common-ancestors algorithm: Chap21/Problems/21-3.md
-  - VI Graph Algorithms:
+  - 图:
       - 22 Elementary Graph Algorithms:
           - 22.1 Representations of graphs: Chap22/22.1.md
           - 22.2 Breadth-first search: Chap22/22.2.md
@@ -315,7 +313,7 @@ nav:
               - 26-4 Updating maximum flow: Chap26/Problems/26-4.md
               - 26-5 Maximum flow by scaling: Chap26/Problems/26-5.md
               - 26-6 The Hopcroft-Karp bipartite matching algorithm: Chap26/Problems/26-6.md
-  - VII Selected Topics:
+  - 问题选编:
       - 27 Multithreaded Algorithms:
           - 27.1 The basics of dynamic multithreading: Chap27/27.1.md
           - 27.2 Multithreaded matrix multiplication: Chap27/27.2.md
