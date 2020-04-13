@@ -1,11 +1,11 @@
-site_name: 'CLRS Solutions'
-site_description: 'Solutions to Introduction to Algorithms Third Edition. CLRS Solutions. The textbook that a Computer Science (CS) student must read.'
+site_name: 'Algorithm Solutions'
+site_description: 'Solutions to Introduction to Algorithms Third Edition. Algorithm Solutions. The textbook that a Computer Science (CS) student must read.'
 site_author: 'cj'
-site_url: 'https://cjql.github.io/CLRS'
+site_url: 'https://cjql.github.io/algorithm'
 
 # Repository
-repo_name: 'cjql/CLRS'
-repo_url: 'https://github.com/cjql/CLRS'
+repo_name: 'cjql/algorithm'
+repo_url: 'https://github.com/cjql/algorithm'
 
 # Copyright
 copyright: 'Built by <a href="http://github.com/cjql">cj</a> &copy; 2020 - '
