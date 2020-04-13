@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="cj">
+        <link rel="canonical" href="https://cjql.github.io/CLRS/Chap17/Problems/17-5/">
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>17-5 Competitive analysis of self-organizing lists with move-to-front - CLRS Solutions</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <link href="../../../css/katex.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" rel="stylesheet">
+
+        <script src="../../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-117404761-1', 'auto');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">CLRS Solutions</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../../.." class="nav-link">Preface</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../../color/" class="nav-link">Color</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">I Foundations <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">1 The Role of Algorithms in Computing</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap01/1.1/" class="dropdown-item">1.1 Algorithms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap01/1.2/" class="dropdown-item">1.2 Algorithms as a technology</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 1 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap01/Problems/1-1/" class="dropdown-item">Problem 1-1</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">2 Getting Started</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap02/2.1/" class="dropdown-item">2.1 Insertion sort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap02/2.2/" class="dropdown-item">2.2 Analyzing algorithms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap02/2.3/" class="dropdown-item">2.3 Designing algorithms</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 2 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap02/Problems/2-1/" class="dropdown-item">2-1 Insertion sort on small arrays in merge sort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap02/Problems/2-2/" class="dropdown-item">2-2 Correctness of bubblesort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap02/Problems/2-3/" class="dropdown-item">2-3 Correctness of Horner's rule</a>
+</li>
+            
+<li>
+    <a href="../../../Chap02/Problems/2-4/" class="dropdown-item">2-4 Inversions</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">3 Growth of Functions</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap03/3.1/" class="dropdown-item">3.1 Asymptotic notation</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/3.2/" class="dropdown-item">3.2 Standard notations and common functions</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 3 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap03/Problems/3-1/" class="dropdown-item">3-1 Asymptotic behavior of polynomials</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/Problems/3-2/" class="dropdown-item">3-2 Relative asymptotic growths</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/Problems/3-3/" class="dropdown-item">3-3 Ordering by asymptotic growth rates</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/Problems/3-4/" class="dropdown-item">3-4 Asymptotic notation properties</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/Problems/3-5/" class="dropdown-item">3-5 Variations on $O$ and $\Omega$</a>
+</li>
+            
+<li>
+    <a href="../../../Chap03/Problems/3-6/" class="dropdown-item">3-6 Iterated functions</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">4 Divide-and-Conquer</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap04/4.1/" class="dropdown-item">4.1 The maximum-subarray problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/4.2/" class="dropdown-item">4.2 Strassen's algorithm for matrix multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/4.3/" class="dropdown-item">4.3 The substitution method for solving recurrences</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/4.4/" class="dropdown-item">4.4 The recursion-tree method for solving recurrences</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/4.5/" class="dropdown-item">4.5 The master method for solving recurrences</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/4.6/" class="dropdown-item">4.6 Proof of the master theorem</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 4 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap04/Problems/4-1/" class="dropdown-item">4-1 Recurrence examples</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/Problems/4-2/" class="dropdown-item">4-2 Parameter-passing costs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/Problems/4-3/" class="dropdown-item">4-3 More recurrence examples</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/Problems/4-4/" class="dropdown-item">4-4 Fibonacci numbers</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/Problems/4-5/" class="dropdown-item">4-5 Chip testing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap04/Problems/4-6/" class="dropdown-item">4-6 Monge arrays</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">5 Probabilistic Analysis and Randomized Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap05/5.1/" class="dropdown-item">5.1 The hiring problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap05/5.2/" class="dropdown-item">5.2 Indicator random variables</a>
+</li>
+            
+<li>
+    <a href="../../../Chap05/5.3/" class="dropdown-item">5.3 Randomized algorithms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap05/5.4/" class="dropdown-item">5.4 Probabilistic analysis and further uses of indicator random variables</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 5 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap05/Problems/5-1/" class="dropdown-item">5-1 Probabilstic counting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap05/Problems/5-2/" class="dropdown-item">5-2 Searching an unsorted array</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">II Sorting and Order Statistics <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">6 Heapsort</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap06/6.1/" class="dropdown-item">6.1 Heaps</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/6.2/" class="dropdown-item">6.2 Maintaining the heap property</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/6.3/" class="dropdown-item">6.3 Building a heap</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/6.4/" class="dropdown-item">6.4 The heapsort algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/6.5/" class="dropdown-item">6.5 Priority queues</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 6 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap06/Problems/6-1/" class="dropdown-item">6-1 Building a heap using insertion</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/Problems/6-2/" class="dropdown-item">6-2 Analysis of $d$-ary heaps</a>
+</li>
+            
+<li>
+    <a href="../../../Chap06/Problems/6-3/" class="dropdown-item">6-3 Young tableaus</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">7 Quicksort</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap07/7.1/" class="dropdown-item">7.1 Description of quicksort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/7.2/" class="dropdown-item">7.2 Performance of quicksort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/7.3/" class="dropdown-item">7.3 A randomized version of quicksort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/7.4/" class="dropdown-item">7.4 Analysis of quicksort</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 7 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap07/Problems/7-1/" class="dropdown-item">7-1 Hoare partition correctness</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/Problems/7-2/" class="dropdown-item">7-2 Quicksort with equal element values</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/Problems/7-3/" class="dropdown-item">7-3 Alternative quicksort analysis</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/Problems/7-4/" class="dropdown-item">7-4 Stack depth for quicksort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/Problems/7-5/" class="dropdown-item">7-5 Median-of-3 partition</a>
+</li>
+            
+<li>
+    <a href="../../../Chap07/Problems/7-6/" class="dropdown-item">7-6 Fuzzy sorting of intervals</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">8 Sorting in Linear Time</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap08/8.1/" class="dropdown-item">8.1 Lower bounds for sorting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/8.2/" class="dropdown-item">8.2 Counting sort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/8.3/" class="dropdown-item">8.3 Radix sort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/8.4/" class="dropdown-item">8.4 Bucket sort</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 8 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap08/Problems/8-1/" class="dropdown-item">8-1 Probabilistic lower bounds on comparison sorting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-2/" class="dropdown-item">8-2 Sorting in place in linear time</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-3/" class="dropdown-item">8-3 Sorting variable-length items</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-4/" class="dropdown-item">8-4 Water jugs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-5/" class="dropdown-item">8-5 Average sorting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-6/" class="dropdown-item">8-6 Lower bound on merging sorted lists</a>
+</li>
+            
+<li>
+    <a href="../../../Chap08/Problems/8-7/" class="dropdown-item">8-7 The $0$-$1$ sorting lemma and columnsort</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">9 Medians and Order Statistics</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap09/9.1/" class="dropdown-item">9.1 Minimum and maximum</a>
+</li>
+            
+<li>
+    <a href="../../../Chap09/9.2/" class="dropdown-item">9.2 Selection in expected linear time</a>
+</li>
+            
+<li>
+    <a href="../../../Chap09/9.3/" class="dropdown-item">9.3 Selection in worst-case linear time</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 9 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap09/Problems/9-1/" class="dropdown-item">9-1 Largest $i$ numbers in sorted order</a>
+</li>
+            
+<li>
+    <a href="../../../Chap09/Problems/9-2/" class="dropdown-item">9-2 Weighted median</a>
+</li>
+            
+<li>
+    <a href="../../../Chap09/Problems/9-3/" class="dropdown-item">9-3 Small order statistics</a>
+</li>
+            
+<li>
+    <a href="../../../Chap09/Problems/9-4/" class="dropdown-item">9-4 Alternative analysis of randomized selection</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">III Data Structures <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">10 Elementary Data Structures</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap10/10.1/" class="dropdown-item">10.1 Stacks and queues</a>
+</li>
+            
+<li>
+    <a href="../../../Chap10/10.2/" class="dropdown-item">10.2 Linked lists</a>
+</li>
+            
+<li>
+    <a href="../../../Chap10/10.3/" class="dropdown-item">10.3 Implementing pointers and objects</a>
+</li>
+            
+<li>
+    <a href="../../../Chap10/10.4/" class="dropdown-item">10.4 Representing rooted trees</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 10 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap10/Problems/10-1/" class="dropdown-item">10-1 Comparisons among lists</a>
+</li>
+            
+<li>
+    <a href="../../../Chap10/Problems/10-2/" class="dropdown-item">10-2 Mergeable heaps using linked lists</a>
+</li>
+            
+<li>
+    <a href="../../../Chap10/Problems/10-3/" class="dropdown-item">10-3 Searching a sorted compact list</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">11 Hash Tables</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap11/11.1/" class="dropdown-item">11.1 Direct-address tables</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/11.2/" class="dropdown-item">11.2 Hash tables</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/11.3/" class="dropdown-item">11.3 Hash functions</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/11.4/" class="dropdown-item">11.4 Open addressing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/11.5/" class="dropdown-item">11.5 Perfect hashing</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 11 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap11/Problems/11-1/" class="dropdown-item">11-1 Longest-probe bound for hashing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/Problems/11-2/" class="dropdown-item">11-2 Slot-size bound for chaining</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/Problems/11-3/" class="dropdown-item">11-3 Quadratic probing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap11/Problems/11-4/" class="dropdown-item">11-4 Hashing and authentication</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">12 Binary Search Trees</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap12/12.1/" class="dropdown-item">12.1 What is a binary search tree?</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/12.2/" class="dropdown-item">12.2 Querying a binary search tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/12.3/" class="dropdown-item">12.3 Insertion and deletion</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/12.4/" class="dropdown-item">12.4 Randomly built binary search trees</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 12 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap12/Problems/12-1/" class="dropdown-item">12-1 Binary search trees with equal keys</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/Problems/12-2/" class="dropdown-item">12-2 Radix trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/Problems/12-3/" class="dropdown-item">12-3 Average node depth in a randomly built binary search tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap12/Problems/12-4/" class="dropdown-item">12-4 Number of different binary trees</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">13 Red-Black Trees</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap13/13.1/" class="dropdown-item">13.1 Properties of red-black trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/13.2/" class="dropdown-item">13.2 Rotations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/13.3/" class="dropdown-item">13.3 Insertion</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/13.4/" class="dropdown-item">13.4 Deletion</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 13 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap13/Problems/13-1/" class="dropdown-item">13-1 Persistent dynamic sets</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/Problems/13-2/" class="dropdown-item">13-2 Join operation on red-black trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/Problems/13-3/" class="dropdown-item">13-3 AVL trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap13/Problems/13-4/" class="dropdown-item">13-4 Treaps</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">14 Augmenting Data Structures</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap14/14.1/" class="dropdown-item">14.1 Dynamic order statistics</a>
+</li>
+            
+<li>
+    <a href="../../../Chap14/14.2/" class="dropdown-item">14.2 How to augment a data structure</a>
+</li>
+            
+<li>
+    <a href="../../../Chap14/14.3/" class="dropdown-item">14.3 Interval trees</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 14 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap14/Problems/14-1/" class="dropdown-item">14-1 Point of maximum overlap</a>
+</li>
+            
+<li>
+    <a href="../../../Chap14/Problems/14-2/" class="dropdown-item">14-2 Josephus permutation</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">IV Advanced Design and Analysis Techniques <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">15 Dynamic Programming</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap15/15.1/" class="dropdown-item">15.1 Rod cutting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/15.2/" class="dropdown-item">15.2 Matrix-chain multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/15.3/" class="dropdown-item">15.3 Elements of dynamic programming</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/15.4/" class="dropdown-item">15.4 Longest common subsequence</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/15.5/" class="dropdown-item">15.5 Optimal binary search trees</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 15 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap15/Problems/15-1/" class="dropdown-item">15-1 Longest simple path in a directed acyclic graph</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-2/" class="dropdown-item">15-2 Longest palindrome subsequence</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-3/" class="dropdown-item">15-3 Bitonic euclidean</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-4/" class="dropdown-item">15-4 Printing neatly</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-5/" class="dropdown-item">15-5 Edit distance</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-6/" class="dropdown-item">15-6 Planning a company party</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-7/" class="dropdown-item">15-7 Viterbi algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-8/" class="dropdown-item">15-8 Image compression by seam carving</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-9/" class="dropdown-item">15-9 Breaking a string</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-10/" class="dropdown-item">15-10 Planning an investment strategy</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-11/" class="dropdown-item">15-11 Inventory planning</a>
+</li>
+            
+<li>
+    <a href="../../../Chap15/Problems/15-12/" class="dropdown-item">15-12 Signing free-agent baseball players</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">16 Greedy Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap16/16.1/" class="dropdown-item">16.1 An activity-selection problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/16.2/" class="dropdown-item">16.2 Elements of the greedy strategy</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/16.3/" class="dropdown-item">16.3 Huffman codes</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/16.4/" class="dropdown-item">16.4 Matroids and greedy methods</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/16.5/" class="dropdown-item">16.5 A task-scheduling problem as a matroid</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 16 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap16/Problems/16-1/" class="dropdown-item">16-1 Coin changing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/Problems/16-2/" class="dropdown-item">16-2 Scheduling to minimize average completion time</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/Problems/16-3/" class="dropdown-item">16-3 Acyclic subgraphs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/Problems/16-4/" class="dropdown-item">16-4 Scheduling variations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap16/Problems/16-5/" class="dropdown-item">16-5 Off-line caching</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">17 Amortized Analysis</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../17.1/" class="dropdown-item">17.1 Aggregate analysis</a>
+</li>
+            
+<li>
+    <a href="../../17.2/" class="dropdown-item">17.2 The accounting method</a>
+</li>
+            
+<li>
+    <a href="../../17.3/" class="dropdown-item">17.3 The potential method</a>
+</li>
+            
+<li>
+    <a href="../../17.4/" class="dropdown-item">17.4 Dynamic tables</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 17 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../17-1/" class="dropdown-item">17-1 Bit-reversed binary counter</a>
+</li>
+            
+<li>
+    <a href="../17-2/" class="dropdown-item">17-2 Making binary search dynamic</a>
+</li>
+            
+<li>
+    <a href="../17-3/" class="dropdown-item">17-3 Amortized weight-balanced trees</a>
+</li>
+            
+<li>
+    <a href="../17-4/" class="dropdown-item">17-4 The cost of restructuring red-black trees</a>
+</li>
+            
+<li>
+    <a href="./" class="dropdown-item active">17-5 Competitive analysis of self-organizing lists with move-to-front</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">V Advanced Data Structures <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">18 B-Trees</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap18/18.1/" class="dropdown-item">18.1 Definition of B-trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap18/18.2/" class="dropdown-item">18.2 Basic operations on B-trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap18/18.3/" class="dropdown-item">18.3 Deleting a key from a B-tree</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 18 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap18/Problems/18-1/" class="dropdown-item">18-1 Stacks on secondary storage</a>
+</li>
+            
+<li>
+    <a href="../../../Chap18/Problems/18-2/" class="dropdown-item">18-2 Joining and splitting 2-3-4 trees</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">19 Fibonacci Heaps</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap19/19.1/" class="dropdown-item">19.1 Structure of Fibonacci heaps</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/19.2/" class="dropdown-item">19.2 Mergeable-heap operations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/19.3/" class="dropdown-item">19.3 Decreasing a key and deleting a node</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/19.4/" class="dropdown-item">19.4 Bounding the maximum degree</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 19 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap19/Problems/19-1/" class="dropdown-item">19-1 Alternative implementation of deletion</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/Problems/19-2/" class="dropdown-item">19-2 Binomial trees and binomial heaps</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/Problems/19-3/" class="dropdown-item">19-3 More Fibonacci-heap operations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap19/Problems/19-4/" class="dropdown-item">19-4 2-3-4 heaps</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">20 van Emde Boas Trees</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap20/20.1/" class="dropdown-item">20.1 Preliminary approaches</a>
+</li>
+            
+<li>
+    <a href="../../../Chap20/20.2/" class="dropdown-item">20.2 A recursive structure</a>
+</li>
+            
+<li>
+    <a href="../../../Chap20/20.3/" class="dropdown-item">20.3 The van Emde Boas tree</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 20 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap20/Problems/20-1/" class="dropdown-item">20-1 Space requirements for van Emde Boas trees</a>
+</li>
+            
+<li>
+    <a href="../../../Chap20/Problems/20-2/" class="dropdown-item">20-2 $y$-fast tries</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">21 Data Structures for Disjoint Sets</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap21/21.1/" class="dropdown-item">21.1 Disjoint-set operations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap21/21.2/" class="dropdown-item">21.2 Linked-list representation of disjoint sets</a>
+</li>
+            
+<li>
+    <a href="../../../Chap21/21.3/" class="dropdown-item">21.3 Disjoint-set forests</a>
+</li>
+            
+<li>
+    <a href="../../../Chap21/21.4/" class="dropdown-item">21.4 Analysis of union by rank with path compression</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 21 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap21/Problems/21-1/" class="dropdown-item">21-1 Off-line minimum</a>
+</li>
+            
+<li>
+    <a href="../../../Chap21/Problems/21-2/" class="dropdown-item">21-2 Depth determination</a>
+</li>
+            
+<li>
+    <a href="../../../Chap21/Problems/21-3/" class="dropdown-item">21-3 Tarjan's off-line least-common-ancestors algorithm</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">VI Graph Algorithms <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">22 Elementary Graph Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap22/22.1/" class="dropdown-item">22.1 Representations of graphs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/22.2/" class="dropdown-item">22.2 Breadth-first search</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/22.3/" class="dropdown-item">22.3 Depth-first search</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/22.4/" class="dropdown-item">22.4 Topological sort</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/22.5/" class="dropdown-item">22.5 Strongly connected components</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 22 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap22/Problems/22-1/" class="dropdown-item">22-1 Classifying edges by breadth-first search</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/Problems/22-2/" class="dropdown-item">22-2 Articulation points, bridges, and biconnected components</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/Problems/22-3/" class="dropdown-item">22-3 Euler tour</a>
+</li>
+            
+<li>
+    <a href="../../../Chap22/Problems/22-4/" class="dropdown-item">22-4 Reachability</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">23 Minimum Spanning Trees</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap23/23.1/" class="dropdown-item">23.1 Growing a minimum spanning tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap23/23.2/" class="dropdown-item">23.2 The algorithms of Kruskal and Prim</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 23 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap23/Problems/23-1/" class="dropdown-item">23-1 Second-best minimum spanning tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap23/Problems/23-2/" class="dropdown-item">23-2 Minimum spanning tree in sparse graphs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap23/Problems/23-3/" class="dropdown-item">23-3 Bottleneck spanning tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap23/Problems/23-4/" class="dropdown-item">23-4 Alternative minimum-spanning-tree algorithms</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">24 Single-Source Shortest Paths</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap24/24.1/" class="dropdown-item">24.1 The Bellman-Ford algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/24.2/" class="dropdown-item">24.2 Single-source shortest paths in directed acyclic graphs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/24.3/" class="dropdown-item">24.3 Dijkstra's algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/24.4/" class="dropdown-item">24.4 Difference constraints and shortest paths</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/24.5/" class="dropdown-item">24.5 Proofs of shortest-paths properties</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 24 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap24/Problems/24-1/" class="dropdown-item">24-1 Yen's improvement to Bellman-Ford</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/Problems/24-2/" class="dropdown-item">24-2 Nesting boxes</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/Problems/24-3/" class="dropdown-item">24-3 Arbitrage</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/Problems/24-4/" class="dropdown-item">24-4 Gabow's scaling algorithm for single-source shortest paths</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/Problems/24-5/" class="dropdown-item">24-5 Karp's minimum mean-weight cycle algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap24/Problems/24-6/" class="dropdown-item">24-6 Bitonic shortest paths</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">25 All-Pairs Shortest Paths</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap25/25.1/" class="dropdown-item">25.1 Shortest paths and matrix multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap25/25.2/" class="dropdown-item">25.2 The Floyd-Warshall algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap25/25.3/" class="dropdown-item">25.3 Johnson's algorithm for sparse graphs</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 25 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap25/Problems/25-1/" class="dropdown-item">25-1 Transitive closure of a dynamic graph</a>
+</li>
+            
+<li>
+    <a href="../../../Chap25/Problems/25-2/" class="dropdown-item">25-2 Shortest paths in epsilon-dense graphs</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">26 Maximum Flow</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap26/26.1/" class="dropdown-item">26.1 Flow networks</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/26.2/" class="dropdown-item">26.2 The Ford-Fulkerson method</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/26.3/" class="dropdown-item">26.3 Maximum bipartite matching</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/26.4/" class="dropdown-item">26.4 Push-relabel algorithms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/26.5/" class="dropdown-item">26.5 The relabel-to-front algorithm</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 26 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap26/Problems/26-1/" class="dropdown-item">26-1 Escape problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/Problems/26-2/" class="dropdown-item">26-2 Minimum path cover</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/Problems/26-3/" class="dropdown-item">26-3 Algorithmic consulting</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/Problems/26-4/" class="dropdown-item">26-4 Updating maximum flow</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/Problems/26-5/" class="dropdown-item">26-5 Maximum flow by scaling</a>
+</li>
+            
+<li>
+    <a href="../../../Chap26/Problems/26-6/" class="dropdown-item">26-6 The Hopcroft-Karp bipartite matching algorithm</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">VII Selected Topics <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">27 Multithreaded Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap27/27.1/" class="dropdown-item">27.1 The basics of dynamic multithreading</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/27.2/" class="dropdown-item">27.2 Multithreaded matrix multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/27.3/" class="dropdown-item">27.3 Multithreaded merge sort</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 27 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap27/Problems/27-1/" class="dropdown-item">27-1 Implementing parallel loops using nested parallelism</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/Problems/27-2/" class="dropdown-item">27-2 Saving temporary space in matrix multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/Problems/27-3/" class="dropdown-item">27-3 Multithreaded matrix algorithms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/Problems/27-4/" class="dropdown-item">27-4 Multithreading reductions and prefix computations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/Problems/27-5/" class="dropdown-item">27-5 Multithreading a simple stencil calculation</a>
+</li>
+            
+<li>
+    <a href="../../../Chap27/Problems/27-6/" class="dropdown-item">27-6 Randomized multithreaded algorithms</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">28 Matrix Operations</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap28/28.1/" class="dropdown-item">28.1 Solving systems of linear equations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap28/28.2/" class="dropdown-item">28.2 Inverting matrices</a>
+</li>
+            
+<li>
+    <a href="../../../Chap28/28.3/" class="dropdown-item">28.3 Symmetric positive-definite matrices and least-squares approximation</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 28 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap28/Problems/28-1/" class="dropdown-item">28-1 Tridiagonal systems of linear equations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap28/Problems/28-2/" class="dropdown-item">28-2 Splines</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">29 Linear Programming</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap29/29.1/" class="dropdown-item">29.1 Standard and slack forms</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/29.2/" class="dropdown-item">29.2 Formulating problems as linear programs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/29.3/" class="dropdown-item">29.3 The simplex algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/29.4/" class="dropdown-item">29.4 Duality</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/29.5/" class="dropdown-item">29.5 The initial basic feasible solution</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 29 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap29/Problems/29-1/" class="dropdown-item">29-1 Linear-inequality feasibility</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/Problems/29-2/" class="dropdown-item">29-2 Complementary slackness</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/Problems/29-3/" class="dropdown-item">29-3 Integer linear programming</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/Problems/29-4/" class="dropdown-item">29-4 Farkas'ss lemma</a>
+</li>
+            
+<li>
+    <a href="../../../Chap29/Problems/29-5/" class="dropdown-item">29-5 Minimum-cost circulation</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">30 Polynomials and the FFT</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap30/30.1/" class="dropdown-item">30.1 Representing polynomials</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/30.2/" class="dropdown-item">30.2 The DFT and FFT</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/30.3/" class="dropdown-item">30.3 Efficient FFT implementations</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 30 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap30/Problems/30-1/" class="dropdown-item">30-1 Divide-and-conquer multiplication</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/Problems/30-2/" class="dropdown-item">30-2 Toeplitz matrices</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/Problems/30-3/" class="dropdown-item">30-3 Multidimensional fast Fourier transform</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/Problems/30-4/" class="dropdown-item">30-4 Evaluating all derivatives of a polynomial at a point</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/Problems/30-5/" class="dropdown-item">30-5 Polynomial evaluation at multiple points</a>
+</li>
+            
+<li>
+    <a href="../../../Chap30/Problems/30-6/" class="dropdown-item">30-6 FFT using modular arithmetic</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">31 Number-Theoretic Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap31/31.1/" class="dropdown-item">31.1 Elementary number-theoretic notions</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.2/" class="dropdown-item">31.2 Greatest common divisor</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.3/" class="dropdown-item">31.3 Modular arithmetic</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.4/" class="dropdown-item">31.4 Solving modular linear equations</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.5/" class="dropdown-item">31.5 The Chinese remainder theorem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.6/" class="dropdown-item">31.6 Powers of an element</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.7/" class="dropdown-item">31.7 The RSA public-key cryptosystem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.8/" class="dropdown-item">31.8 Primality testing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/31.9/" class="dropdown-item">31.9 Integer factorization</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 31 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap31/Problems/31-1/" class="dropdown-item">31-1 Binary gcd algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/Problems/31-2/" class="dropdown-item">31-2 Analysis of bit operations in Euclid's algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/Problems/31-3/" class="dropdown-item">31-3 Three algorithms for Fibonacci numbers</a>
+</li>
+            
+<li>
+    <a href="../../../Chap31/Problems/31-4/" class="dropdown-item">31-4 Quadratic residues</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">32 String Matching</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap32/32.1/" class="dropdown-item">32.1 The naive string-matching algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap32/32.2/" class="dropdown-item">32.2 The Rabin-Karp algorithm</a>
+</li>
+            
+<li>
+    <a href="../../../Chap32/32.3/" class="dropdown-item">32.3 String matching with finite automata</a>
+</li>
+            
+<li>
+    <a href="../../../Chap32/32.4/" class="dropdown-item">32.4 The Knuth-Morris-Pratt algorithm</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 32 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap32/Problems/32-1/" class="dropdown-item">32-1 String matching based on repetition factors</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">33 Computational Geometry</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap33/33.1/" class="dropdown-item">33.1 Line-segment properties</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/33.2/" class="dropdown-item">33.2 Determining whether any pair of segments intersects</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/33.3/" class="dropdown-item">33.3 Finding the convex hull</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/33.4/" class="dropdown-item">33.4 Finding the closest pair of points</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 33 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap33/Problems/33-1/" class="dropdown-item">33-1 Convex layers</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/Problems/33-2/" class="dropdown-item">33-2 Maximal layers</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/Problems/33-3/" class="dropdown-item">33-3 Ghostbusters and ghosts</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/Problems/33-4/" class="dropdown-item">33-4 Picking up sticks</a>
+</li>
+            
+<li>
+    <a href="../../../Chap33/Problems/33-5/" class="dropdown-item">33-5 Sparse-hulled distributions</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">34 NP-Completeness</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap34/34.1/" class="dropdown-item">34.1 Polynomial time</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/34.2/" class="dropdown-item">34.2 Polynomial-time verification</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/34.3/" class="dropdown-item">34.3 NP-completeness and reducibility</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/34.4/" class="dropdown-item">34.4 NP-completeness proofs</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/34.5/" class="dropdown-item">34.5 NP-complete problems</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 34 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap34/Problems/34-1/" class="dropdown-item">34-1 Independent set</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/Problems/34-2/" class="dropdown-item">34-2 Bonnie and Clyde</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/Problems/34-3/" class="dropdown-item">34-3 Graph coloring</a>
+</li>
+            
+<li>
+    <a href="../../../Chap34/Problems/34-4/" class="dropdown-item">34-4 Scheduling with profits and deadlines</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">35 Approximation Algorithms</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap35/35.1/" class="dropdown-item">35.1 The vertex-cover problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/35.2/" class="dropdown-item">35.2 The traveling-salesman problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/35.3/" class="dropdown-item">35.3 The set-covering problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/35.4/" class="dropdown-item">35.4 Randomization and linear programming</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/35.5/" class="dropdown-item">35.5 The subset-sum problem</a>
+</li>
+            
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Chap 35 Problems</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="../../../Chap35/Problems/35-1/" class="dropdown-item">35-1 Bin packing</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-2/" class="dropdown-item">35-2 Approximating the size of a maximum clique</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-3/" class="dropdown-item">35-3 Weighted set-covering problem</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-4/" class="dropdown-item">35-4 Maximum matching</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-5/" class="dropdown-item">35-5 Parallel machine scheduling</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-6/" class="dropdown-item">35-6 Approximating a maximum spanning tree</a>
+</li>
+            
+<li>
+    <a href="../../../Chap35/Problems/35-7/" class="dropdown-item">35-7 An approximation algorithm for the 0-1 knapsack problem</a>
+</li>
+    </ul>
+  </li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../17-4/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../../Chap18/18.1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/cjql/CLRS/edit/master/docs/Chap17/Problems/17-5.md" class="nav-link">Edit on cjql/CLRS</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<blockquote>
+<p>A <strong><em>self-organizing list</em></strong> is a linked list of $n$ elements, in which each element has a unique key. When we search for an element in the list, we are given a key, and we want to find an element with that key.</p>
+<p>A self-organizing list has two important properties:</p>
+<ol>
+<li>To find an element in the list, given its key, we must traverse the list from the beginning until we encounter the element with the given key. If that element is the $k$th element from the start of the list, then the cost to find the element is $k$.</li>
+<li>We may reorder the list elements after any operation, according to a given rule with a given cost. We may choose any heuristic we like to decide how to reorder the list.</li>
+</ol>
+<p>Assume that we start with a given list of $n$ elements, and we are given an access sequence $\sigma = \langle \sigma_1, \sigma_2, \ldots, \sigma_m \rangle$ of keys to find, in order. The cost of the sequence is the sum of the costs of the individual accesses in the sequence.</p>
+<p>Out of the various possible ways to reorder the list after an operation, this problem focuses on transposing adjacent list elements-switching their positions in the list—with a unit cost for each transpose operation. You will show, by means of a potential function, that a particular heuristic for reordering the list, move-to-front, entails a total cost no worse than $4$ times that of any other heuristic for maintaining the list order—even if the other heuristic knows the access sequence in advance! We call this type of analysis a <strong><em>competitive analysis</em></strong>.</p>
+<p>For a heuristic $H$ and a given initial ordering of the list, denote the access cost of sequence $\sigma$ by $C_H(\sigma)$ Let $m$ be the number of accesses in $\sigma$.</p>
+<p><strong>a.</strong> Argue that if heuristic $\text H$ does not know the access sequence in advance, then the worst-case cost for $\text H$ on an access sequence $\sigma$ is $C_H(\sigma) = \Omega(mn)$.</p>
+<p>With the <strong><em>move-to-front</em></strong> heuristic, immediately after searching for an element $x$, we move $x$ to the first position on the list (i.e., the front of the list).</p>
+<p>Let $\text{rank}_L(x)$ denote the rank of element $x$ in list $L$, that is, the position of $x$ in list $L$. For example, if $x$ is the fourth element in $L$, then $\text{rank}_L(x) = 4$. Let $c_i$ denote the cost of access $\sigma_i$ using the move-to-front heuristic, which includes the cost of finding the element in the list and the cost of moving it to the front of the list by a series of transpositions of adjacent list elements.</p>
+<p><strong>b.</strong> Show that if $\sigma_i$ accesses element $x$ in list $L$ using the move-to-front heuristic, then $c_i = 2 \cdot \text{rank}_L(x) - 1$.</p>
+<p>Now we compare move-to-front with any other heuristic $\text H$ that processes an access sequence according to the two properties above. Heuristic $\text H$ may transpose elements in the list in any way it wants, and it might even know the entire access sequence in advance.</p>
+<p>Let $L_i$ be the list after access $\sigma_i$ using move-to-front, and let $L_i^*$ be the list after access $\sigma_i$ using heuristic $\text H$. We denote the cost of access $\sigma_i$ by $c_i$ for move-to-front and by $c_i^*$ for heuristic $\text H$. Suppose that heuristic $\text H$ performs $t_i^*$ transpositions during access $\sigma_i$.</p>
+<p><strong>c.</strong> In part (b), you showed that $c_i = 2 \cdot \text{rank}_{L_{i - 1}}(x) - 1$. Now show that $c_i^* = \text{rank}_{L_{i - 1}^*}(x) + t_i^*$.</p>
+<p>We define an <strong><em>inversion</em></strong> in list $L_i$ as a pair of elements $y$ and $z$ such that $y$ precedes $z$ in $L_i$ and $z$ precedes $y$ in list $L_i^*$. Suppose that list $L_i$ has $q_i$ inversions after processing the access sequence $\langle \sigma_1, \sigma_2, \ldots, \sigma_i \rangle$. Then, we define a potential function $\Phi$ that maps $L_i$ to a real number by $\Phi(L_i) = 2q_i$. For example, if $L_i$ has the elements $\langle e, c, a, d, b \rangle$ and $L_i^*$ has the elements $\langle c, a, b, d, e \rangle$, then $L_i$ has 5 inversions $((e, c), (e, a), (e, d), (e, b), (d, b))$, and so $\Phi(L_i) = 10$. Observe that $\Phi(L_i) \ge 0$ for all $i$ and that, if move-to-front and heuristic $\text H$ start with the same list $L_0$, then $\Phi(L_0) = 0$.</p>
+<p><strong>d.</strong> Argue that a transposition either increases the potential by $2$ or decreases the potential by $2$.</p>
+<p>Suppose that access $\sigma_i$ finds the element $x$. To understand how the potential changes due to $\sigma_i$, let us partition the elements other than $x$ into four sets, depending on where they are in the lists just before the $i$th access:</p>
+<ul>
+<li>Set $A$ consists of elements that precede $x$ in both $L_{i - 1}$ and $L_{i - 1}^*$.</li>
+<li>Set $B$ consists of elements that precede $x$ in $L_{i - 1}$ and follow $x$ in $L_{i - 1}^*$.</li>
+<li>Set $C$ consists of elements that follow $x$ in $L_{i - 1}$ and precede $x$ in $L_{i - 1}^*$.</li>
+<li>Set $D$ consists of elements that follow $x$ in both $L_{i - 1}$ and $L_{i - 1}^*$.</li>
+</ul>
+<p><strong>e.</strong> Argue that $\text{rank}_{L_{i - 1}}(x) = |A| + |B| + 1$ and $\text{rank}_{L_{i - 1}^*}(x) = |A| + |C| + 1$.</p>
+<p><strong>f.</strong> Show that access $\sigma_i$ causes a change in potential of</p>
+<p>$$\Phi(L_i) - \Phi(L_{i - 1}) \le 2(|A| - |B| + t_i^*),$$</p>
+<p>where, as before, heuristic $\text H$ performs $t_i^*$ transpositions during access $\sigma_i$.</p>
+<p>Define the amortized cost $\hat c_i$ of access $\sigma_i$ by $\hat c_i = c_i + \Phi(L_i) - \Phi(L_{i - 1})$.</p>
+<p><strong>g.</strong> Show that the amortized cost $\hat c_i$ of access $\sigma_i$ is bounded from above by $4c_i^*$.</p>
+<p><strong>h.</strong> Conclude that the cost $C_{\text{MTF}}(\sigma)$ of access sequence $\sigma$ with move-to-front is at most $4$ times the cost $C_H(\sigma)$ of $\sigma$ withany other heuristic $\text H$, assuming that both heuristics start with the same list.</p>
+</blockquote>
+<p><strong>a.</strong> Since the heuristic is picked in advance, given any sequence of requests given so far, we can simulate what ordering the heuristic will call for, then, we will pick our next request to be whatever element will of been in the last position of the list. Continuing until all the requests have been made, we have that the cost of this sequence of accesses is $= mn$.</p>
+<p><strong>b.</strong> The cost of finding an element is $= \text{rank}_L(x)$ and since it needs to be swapped with all the elements before it, of which there are $\text{rank}_L(x) - 1$, the total cost is $2 \cdot \text{rank}_L(x) - 1$.</p>
+<p><strong>c.</strong> Regardless of the heuristic used, we first need to locate the element, which is left where ever it was after the previous step, so, needs $\text{rank}_{L_{i - 1}}(x)$. After that, by definition, there are $t_i$ transpositions made, so, $c^*_i = \text{rank}_{L_{i - 1}}(x) + t_i^*$.</p>
+<p><strong>d.</strong> If we perform a transposition of elements $y$ and $z$, where $y$ is towards the left. Then there are two cases. The first is that the final ordering of the list in $L_i^*$ is with $y$ in front of $z$, in which case we have just increased the number of inversions by $1$, so the potential increases by $2$. The second is that in $L_I^*z$ occurs before $y$, in which case, we have just reduced the number of inversions by one, reducing the potential by $2$.</p>
+<p>In both cases, whether or not there is an inversion between $y$ or $z$ and any other element has not changed, since the transposition only changed the relative ordering of those two elements.</p>
+<p><strong>e.</strong> By definition, $A$ and $B$ are the only two of the four categories to place elements that precede $x$ in $L_{i - 1}$, since there are $|A| + |B|$ elements preceding it, it's rank in $L_{i - 1}$ is $|A| + |B| + 1$. Similarly, the two categories in which an element can be if it precedes $x$ in $L^*_{i - 1}$ are $A$ and $C$, so, in $L^*_{i - 1}$, $x$ has $\text{rank} |A| + |C| + 1$.</p>
+<p><strong>f.</strong> We have from part d that the potential increases by $2$ if we transpose two elements that are being swapped so that their relative order in the final ordering is being screwed up, and decreases by two if they are begin placed into their correct order in $L^*_i$.</p>
+<p>In particular, they increase it by at most $2$, since we are keeping track of the number of inversions that may not be the direct effect of the transpositions that heuristic $H$ made, we see which ones the Move to front heuristic may of added. In particular, since the move to front heuristic only changed the relative order of $x$ with respect to the other elements, moving it in front of the elements that preceded it in $L_{i - 1}$, we only care about sets $A$ and $B$. For an element in $A$, moving it to be behind $A$ created an inversion, since that element preceded $x$ in $L^*_i$. However, if the element were in $B$, we are removing an inversion by placing $x$ in front of it.</p>
+<p><strong>g.</strong></p>
+<p>$$
+\begin{aligned}
+\hat c_i &amp; \le 2(|A| + |B| + 1) - 1 + 2(|A| - |B| + t_i^*) \\
+         &amp; =   4|A| + 1 + 2 t_i^* \\
+         &amp; \le 4(|A| + |C| + 1 + t_i^*) \\
+         &amp; =   4 c_i^*.
+\end{aligned}
+$$</p>
+<p><strong>h.</strong> We showed that the amortized cost of each operation under the move to front heuristic was at most four times the cost of the operation using any other heuristic. Since the amortized cost added up over all these operation is at most the total (real) cost, so we have that the total cost with movetofront is at most four times the total cost with an arbitrary other heuristic.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Built by <a href="http://github.com/cjql">cj</a> &copy; 2020 - </p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js" defer></script>
+        <script src="../../../js/katex.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script>
+        <script src="../../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
