@@ -1,6 +1,6 @@
 ---
 name: 'LeetCode '
-about: Describe this issue template's purpose here.
+about: dynamic
 title: 'LeetCode_Dynamic:  '
 labels: ''
 assignees: ''
