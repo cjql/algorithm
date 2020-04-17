@@ -1,7 +1,7 @@
 ---
 name: 'LeetCode '
 about: Describe this issue template's purpose here.
-title: 'LeetCode '
+title: 'LeetCode_Dynamic:  '
 labels: ''
 assignees: ''
 
