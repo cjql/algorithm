@@ -10,7 +10,14 @@ repo_url: 'https://github.com/cjql/algorithm'
 # Copyright
 copyright: 'Built by <a href="http://github.com/cjql">cj</a> &copy; 2020 - '
 
-
+# https://github.com/mkdocs/mkdocs/blob/master/mkdocs.yml
+theme:
+    name: mkdocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - django
+        
 # Customization
 extra:
   social:
