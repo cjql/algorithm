@@ -1,0 +1,2 @@
+ERROR:root:Couldn't find 'spam'
+CRITICAL:root:Host www.python.org unknown
